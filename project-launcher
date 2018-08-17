@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+project_name = ARGV[0]
+path = File.expand_path("~/Projects/launchers/#{project_name}.yml")
+
+if not File.exists?(path)
+  puts "Project #{project_name} not found."
+  exit
+end
+
+begin
+  project_yaml = YAML.load_file(path)
+  puts "Starting project #{project_yaml['name']}"
+  command = project_yaml['commands'].join(" && ")
+  exec(command)
+rescue Exception
+  puts "Cannot read YAML file."
+end
