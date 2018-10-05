@@ -5,16 +5,25 @@ require 'yaml'
 project_name = ARGV[0]
 path = File.expand_path("~/Projects/launchers/#{project_name}.yml")
 
+
+
+
 if not File.exists?(path)
   puts "Project #{project_name} not found."
   exit
 end
 
 begin
-  project_yaml = YAML.load_file(path)
-  puts "Starting project #{project_yaml['name']}"
-  command = project_yaml['commands'].join(" && ")
-  exec(command)
+    project_yaml = YAML.load_file(path)
+    puts "Starting project #{project_yaml['name']}"
+    if ARGV.include? 's'
+      command = project_yaml['shell']
+    elsif ARGV.include? 'u'
+      command = project_yaml['update']
+    else
+      command = project_yaml['run'].join(" && ")
+    end
+    exec(command)
 rescue Exception
   puts "Cannot read YAML file."
 end
