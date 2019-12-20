@@ -5,9 +5,6 @@ require 'yaml'
 project_name = ARGV[0]
 path = File.expand_path("~/Projects/launchers/#{project_name}.yml")
 
-
-
-
 if not File.exists?(path)
   puts "Project #{project_name} not found."
   abort
@@ -20,11 +17,20 @@ rescue Exception
 end
 
 puts project_yaml['name']
+puts " "
 key = ARGV[1]
+
+if not key
+  puts "Possible commands: "
+  project_yaml.keys.each { |x| puts "  " + x }
+  abort
+end
+
 if not project_yaml[key]
   puts "Command with key #{key} not found."
   abort
 end
 
-command = project_yaml[key].join(" && ")
+command = project_yaml[key].join("; ")
+puts command
 exec(command)
