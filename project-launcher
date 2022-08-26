@@ -38,7 +38,9 @@ if not project_yaml[key]
 end
 
 command = project_yaml[key].join("; ")
-command_with_args = command.sub("###args###", ARGV[2..-1].join(" "))
+if ARGV.length() > 2
+  command = command.sub("###args###", ARGV[2..-1].join(" "))
+end
 
-puts command_with_args
-exec(command_with_args)
+puts command
+exec(command)
