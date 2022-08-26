@@ -21,10 +21,16 @@ puts " "
 key = ARGV[1]
 
 if not key
-  puts "Possible commands: "
-  project_yaml.keys.each { |x| puts "  " + x }
-  abort
+  project_yaml.keys.each_with_index do |x, i|
+    puts "#{i}: #{x}"
+  end
+
+  puts "Please make a selection:"
+  selection = STDIN.gets
+  key = project_yaml.keys[selection.to_i]
 end
+
+puts "Executing #{key}"
 
 if not project_yaml[key]
   puts "Command with key #{key} not found."
@@ -32,5 +38,7 @@ if not project_yaml[key]
 end
 
 command = project_yaml[key].join("; ")
-puts command
-exec(command)
+command_with_args = command.sub("###args###", ARGV[2..-1].join(" "))
+
+puts command_with_args
+exec(command_with_args)
