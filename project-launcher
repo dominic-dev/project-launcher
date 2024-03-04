@@ -37,6 +37,10 @@ if not project_yaml[key]
   abort
 end
 
+if project_yaml['project_path']
+  Dir.chdir(project_yaml['project_path'])
+end
+
 command = project_yaml[key].join("; ")
 if ARGV.length() > 2
   command = command.sub("###args###", ARGV[2..-1].join(" "))
